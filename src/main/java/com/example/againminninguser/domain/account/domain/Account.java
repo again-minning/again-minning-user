@@ -3,7 +3,7 @@ package com.example.againminninguser.domain.account.domain;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -28,9 +28,13 @@ public class Account {
 
     private String fcmToken;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
-    private LocalDate lastLogin;
+    private LocalDateTime lastLogin;
+
+    public void updateLastLogin() {
+        this.lastLogin = LocalDateTime.now();
+    }
 }

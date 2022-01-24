@@ -11,4 +11,9 @@ public class UserNotFoundException extends RuntimeException{
         super(AccountContent.USER_NOT_FOUND);
         this.status = HttpStatus.BAD_REQUEST;
     }
+
+    public UserNotFoundException(String msg){
+        super(msg);
+        this.status = HttpStatus.BAD_REQUEST;
+    }
 }

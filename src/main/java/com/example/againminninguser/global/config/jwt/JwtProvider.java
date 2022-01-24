@@ -1,5 +1,6 @@
 package com.example.againminninguser.global.config.jwt;
 
+import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.service.CustomUserDetailsService;
 import com.example.againminninguser.global.common.content.AccountContent;
 import io.jsonwebtoken.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -100,5 +102,11 @@ public class JwtProvider {
             request.setAttribute("exception", AccountContent.EMPTY_TOKEN);
             return false;
         }
+    }
+
+    public void setRefreshInRedis(Account account, String refreshToken) {
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        long expiration = this.getExpiration(refreshToken).getTime() - System.currentTimeMillis();
+        values.set(account.getEmail(), refreshToken, Duration.ofMillis(expiration));
     }
 }
