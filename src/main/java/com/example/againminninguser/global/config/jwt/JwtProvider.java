@@ -1,8 +1,8 @@
 package com.example.againminninguser.global.config.jwt;
 
-import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.service.CustomUserDetailsService;
 import com.example.againminninguser.global.common.content.AccountContent;
+import com.example.againminninguser.global.erorr.RefreshTokenBadRequestException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,9 +104,22 @@ public class JwtProvider {
         }
     }
 
-    public void setRefreshInRedis(Account account, String refreshToken) {
+    public void setRefreshInRedis(String email, String refreshToken) {
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         long expiration = this.getExpiration(refreshToken).getTime() - System.currentTimeMillis();
-        values.set(account.getEmail(), refreshToken, Duration.ofMillis(expiration));
+        values.set(email, refreshToken, Duration.ofMillis(expiration));
+    }
+
+    public void checkRefreshInRedis(String accountEmail, String refreshToken) {
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        String refreshTokenInRedis = values.get(accountEmail);
+        if(!refreshToken.equals(refreshTokenInRedis)) {
+            throw new RefreshTokenBadRequestException();
+        }
+    }
+
+    public void changeRefreshTokenInRedis(String accountEmail, String newRefreshToken) {
+        redisTemplate.delete(accountEmail);
+        this.setRefreshInRedis(accountEmail, newRefreshToken);
     }
 }
