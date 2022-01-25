@@ -1,5 +1,6 @@
 package com.example.againminninguser.global.config.jwt;
 
+import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.domain.account.service.CustomUserDetailsService;
 import com.example.againminninguser.global.common.content.AccountContent;
 import com.example.againminninguser.global.error.RefreshTokenBadRequestException;
@@ -37,6 +38,18 @@ public class JwtProvider {
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
+    public TokenDto refreshAccessAndRefreshToken(String email, List<String> roles) {
+        TokenDto tokenDto = this.createAccessAndRefreshToken(email, roles);
+        this.changeRefreshTokenInRedis(email, tokenDto.getRefreshToken());
+        return tokenDto;
+    }
+
+    public TokenDto createAccessAndRefreshToken(String email, List<String> roles) {
+        String accessToken = createAccessToken(email, roles);
+        String refreshToken = createRefreshToken(email, roles);
+        return new TokenDto(accessToken, refreshToken);
     }
 
     public String createAccessToken(String email, List<String> roles){

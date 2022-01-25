@@ -17,31 +17,26 @@ import static com.example.againminninguser.global.common.content.AccountContent.
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
-    public TokenDto getNewRefresh(String accountEmail, String refreshToken) {
-        jwtProvider.checkRefreshInRedis(accountEmail, refreshToken);
-        String newAccessToken = jwtProvider.createAccessToken(accountEmail, Collections.singletonList("ROLE_USER"));
-        String newRefreshToken = jwtProvider.createRefreshToken(accountEmail, Collections.singletonList("ROLE_USER"));
-        jwtProvider.changeRefreshTokenInRedis(accountEmail, newRefreshToken);
-        return new TokenDto(newAccessToken, newRefreshToken);
+    public TokenDto getNewRefresh(String email, String refreshToken) {
+        jwtProvider.checkRefreshInRedis(email, refreshToken);
+        return jwtProvider.refreshAccessAndRefreshToken(email, Collections.singletonList("ROLE_USER"));
     }
 
-    @Transactional
     public LoginResponse login(String email, String password) {
         Account account = accountRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         checkPassword(password, account.getPassword());
-        String accessToken = jwtProvider.createAccessToken(account.getEmail(), Collections.singletonList("ROLE_USER"));
-        String refreshToken = jwtProvider.createRefreshToken(account.getEmail(), Collections.singletonList("ROLE_USER"));
-        jwtProvider.setRefreshInRedis(account.getEmail(), refreshToken);
+        TokenDto tokenDto = jwtProvider.createAccessAndRefreshToken(email, Collections.singletonList("ROLE_USER"));
+        jwtProvider.setRefreshInRedis(account.getEmail(), tokenDto.getRefreshToken());
         account.updateLastLogin();
         return new LoginResponse(
-                account.getId(), account.getEmail(), account.getNickname(), accessToken, refreshToken);
-
+                account.getId(), account.getEmail(), account.getNickname(), tokenDto);
     }
 
     private void checkPassword(String password, String encodedPassword) {
