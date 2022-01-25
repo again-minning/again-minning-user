@@ -11,10 +11,10 @@ public class LoginResponse {
     private String accessToken;
     private String refreshToken;
 
-    public LoginResponse(Account account, String accessToken, String refreshToken) {
-        this.id = account.getId();
-        this.email = account.getEmail();
-        this.nickname = account.getNickname();
+    public LoginResponse(Long id, String email, String nickname, String accessToken, String refreshToken) {
+        this.id = id;
+        this.email = email;
+        this.nickname = nickname;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

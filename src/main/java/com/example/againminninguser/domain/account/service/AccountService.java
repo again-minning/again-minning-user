@@ -39,7 +39,8 @@ public class AccountService {
         String refreshToken = jwtProvider.createRefreshToken(account.getEmail(), Collections.singletonList("ROLE_USER"));
         jwtProvider.setRefreshInRedis(account.getEmail(), refreshToken);
         account.updateLastLogin();
-        return new LoginResponse(account, accessToken, refreshToken);
+        return new LoginResponse(
+                account.getId(), account.getEmail(), account.getNickname(), accessToken, refreshToken);
 
     }
 
