@@ -23,7 +23,7 @@ public class AccountController {
     @PostMapping("/login")
     public CustomResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return new CustomResponseEntity<>(
-                Message.builder().msg(AccountContent.LOGIN_OK).status(HttpStatus.OK).build(),
+                Message.of(HttpStatus.OK, AccountContent.LOGIN_OK),
                 accountService.login(loginRequest.getEmail(), loginRequest.getPassword())
         );
     }
@@ -32,7 +32,7 @@ public class AccountController {
     public CustomResponseEntity<TokenDto> refreshToken(
             @PathParam("email") String email, @PathParam("refreshToken") String refreshToken) {
         return new CustomResponseEntity<>(
-                Message.builder().msg(AccountContent.REFRESH_OK).status(HttpStatus.OK).build(),
+                Message.of(HttpStatus.OK, AccountContent.REFRESH_OK),
                 accountService.getNewRefresh(email, refreshToken)
         );
     }

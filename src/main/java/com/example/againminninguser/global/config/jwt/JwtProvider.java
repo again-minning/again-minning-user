@@ -49,7 +49,7 @@ public class JwtProvider {
     public TokenDto createAccessAndRefreshToken(String email, List<String> roles) {
         String accessToken = createAccessToken(email, roles);
         String refreshToken = createRefreshToken(email, roles);
-        return new TokenDto(accessToken, refreshToken);
+        return TokenDto.of(accessToken, refreshToken);
     }
 
     public String createAccessToken(String email, List<String> roles){

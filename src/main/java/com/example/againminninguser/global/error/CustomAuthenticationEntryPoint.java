@@ -23,7 +23,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         String exception = (String) request.getAttribute("exception");
         setResponse(response);
-        Message error = Message.builder().msg(exception).status(HttpStatus.FORBIDDEN).build();
+        Message error = Message.of(HttpStatus.FORBIDDEN, exception);
         response.getWriter().print(convertObjectToJson(error));
     }
 

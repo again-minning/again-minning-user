@@ -35,8 +35,7 @@ public class AccountService {
         TokenDto tokenDto = jwtProvider.createAccessAndRefreshToken(email, Collections.singletonList("ROLE_USER"));
         jwtProvider.setRefreshInRedis(account.getEmail(), tokenDto.getRefreshToken());
         account.updateLastLogin();
-        return new LoginResponse(
-                account.getId(), account.getEmail(), account.getNickname(), tokenDto);
+        return LoginResponse.of(account.getId(), account.getEmail(), account.getNickname(), tokenDto);
     }
 
     private void checkPassword(String password, String encodedPassword) {
