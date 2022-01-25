@@ -41,7 +41,7 @@ public class JwtProvider {
 
     public String createAccessToken(String email, List<String> roles){
         // 1h
-        long accessTokenValidTime = 60 * 60 * 1000L;
+        long accessTokenValidTime = 1000L;
         return this.createToken(email, roles, accessTokenValidTime);
     }
 
@@ -77,24 +77,25 @@ public class JwtProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveAccessToken(HttpServletRequest request) {
+    public String getAccessTokenFromHeader(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return token != null
                 ? request.getHeader("Authorization").substring(7)
                 : null;
     }
 
-    public boolean validateToken(HttpServletRequest request, String jwtToken) {
+    public boolean validateToken(HttpServletRequest request, String token) {
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            Optional<String> isBlackList = Optional.ofNullable(operations.get(jwtToken));
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Optional<String> isBlackList = Optional.ofNullable(operations.get(token));
             if(isBlackList.isPresent()) {
                 throw new UsernameNotFoundException(AccountContent.EXPIRED_TOKEN);// 로그아웃 된 토큰요청 예외
             }
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException | UsernameNotFoundException e) {
             request.setAttribute("exception", AccountContent.EXPIRED_TOKEN);
+            System.out.println("asd");
             return false;
         } catch (MalformedJwtException e) {
             request.setAttribute("exception", AccountContent.MALFORMED_TOKEN);
