@@ -1,4 +1,4 @@
-package com.example.againminninguser.global.erorr;
+package com.example.againminninguser.global.error;
 
 import com.example.againminninguser.global.common.response.CustomResponseEntity;
 import com.example.againminninguser.global.common.response.Message;

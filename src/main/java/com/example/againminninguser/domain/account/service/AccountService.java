@@ -5,7 +5,7 @@ import com.example.againminninguser.domain.account.domain.AccountRepository;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
-import com.example.againminninguser.global.erorr.UserNotFoundException;
+import com.example.againminninguser.global.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

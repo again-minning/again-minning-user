@@ -2,7 +2,7 @@ package com.example.againminninguser.global.config.jwt;
 
 import com.example.againminninguser.domain.account.service.CustomUserDetailsService;
 import com.example.againminninguser.global.common.content.AccountContent;
-import com.example.againminninguser.global.erorr.RefreshTokenBadRequestException;
+import com.example.againminninguser.global.error.RefreshTokenBadRequestException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

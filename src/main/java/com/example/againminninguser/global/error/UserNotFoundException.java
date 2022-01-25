@@ -1,4 +1,4 @@
-package com.example.againminninguser.global.erorr;
+package com.example.againminninguser.global.error;
 
 import com.example.againminninguser.global.common.content.AccountContent;
 import lombok.Getter;

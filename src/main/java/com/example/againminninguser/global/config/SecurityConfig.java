@@ -2,7 +2,7 @@ package com.example.againminninguser.global.config;
 
 import com.example.againminninguser.global.config.jwt.JwtAuthenticationFilter;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
-import com.example.againminninguser.global.erorr.CustomAuthenticationEntryPoint;
+import com.example.againminninguser.global.error.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
