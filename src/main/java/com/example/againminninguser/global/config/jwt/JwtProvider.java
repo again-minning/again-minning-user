@@ -108,7 +108,6 @@ public class JwtProvider {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException | UsernameNotFoundException e) {
             request.setAttribute("exception", AccountContent.EXPIRED_TOKEN);
-            System.out.println("asd");
             return false;
         } catch (MalformedJwtException e) {
             request.setAttribute("exception", AccountContent.MALFORMED_TOKEN);
