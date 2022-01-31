@@ -23,6 +23,9 @@ import static com.example.againminninguser.global.common.content.AccountContent.
 @Transactional
 public class AccountService {
 
+    private static final Pattern EMAIL_REGEX = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
+    private static final Pattern PASSWORD_REGEX = Pattern.compile("^[a-zA-Z0-9]{8,20}");
+
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -65,8 +68,8 @@ public class AccountService {
     }
 
     private void checkEmailFormat(String email) {
-        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
-        boolean matches = Pattern.matches(regex, email);
+//        boolean matches = Pattern.matches(regex, email);
+        boolean matches = PASSWORD_REGEX.matcher(email).matches();
         if(!matches) {
             throw new BadRequestException(INVALID_EMAIL_FORMAT);
         }
@@ -74,8 +77,7 @@ public class AccountService {
     }
 
     private void checkPasswordFormat(String password) {
-        String regex = "^[a-zA-Z0-9]{8,20}";
-        boolean matches = Pattern.matches(regex, password);
+        boolean matches = EMAIL_REGEX.matcher(password).matches();
         if(!matches) {
             throw new BadRequestException(INVALID_PASSWORD_FORMAT);
         }
