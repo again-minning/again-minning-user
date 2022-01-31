@@ -24,4 +24,11 @@ public class AccountExceptionHandler {
         Message message = Message.of(e.getStatus(), e.getMessage());
         return new CustomResponseEntity<>(message);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CustomResponseEntity<Message> handle(BadRequestException e){
+        Message message = Message.of(e.getStatus(), e.getMessage());
+        return new CustomResponseEntity<>(message);
+    }
 }

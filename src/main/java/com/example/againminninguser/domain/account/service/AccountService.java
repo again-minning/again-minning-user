@@ -6,6 +6,7 @@ import com.example.againminninguser.domain.account.domain.dto.SignUp;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
+import com.example.againminninguser.global.error.BadRequestException;
 import com.example.againminninguser.global.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.regex.Pattern;
 
-import static com.example.againminninguser.global.common.content.AccountContent.USER_NOT_FOUND_BY_LOGIN;
+import static com.example.againminninguser.global.common.content.AccountContent.*;
 
 @Service
 @RequiredArgsConstructor
@@ -63,18 +65,27 @@ public class AccountService {
     }
 
     private void checkEmailFormat(String email) {
-        // if email is not access to format then throw exception
+        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+        boolean matches = Pattern.matches(regex, email);
+        if(!matches) {
+            throw new BadRequestException(INVALID_EMAIL_FORMAT);
+        }
+
     }
 
     private void checkPasswordFormat(String password) {
-        // if password is not access to format then throw exception
+        String regex = "^[a-zA-Z0-9]{8,20}";
+        boolean matches = Pattern.matches(regex, password);
+        if(!matches) {
+            throw new BadRequestException(INVALID_PASSWORD_FORMAT);
+        }
 
     }
 
     private void checkDuplicatedEmail(String email) {
         boolean exists = accountRepository.existsByEmail(email);
         if(exists) {
-            // throw 중복 예외;
+            throw new BadRequestException(DUPLICATED_EMAIL);
         }
     }
 }

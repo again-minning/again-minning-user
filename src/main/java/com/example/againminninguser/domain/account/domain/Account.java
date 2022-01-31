@@ -19,13 +19,10 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* Todo Add Validation */
     private String email;
 
-    /* Todo Add Validation */
     private String password;
 
-    /* Todo Add Validation */
     private String nickname;
 
     private String profile;
