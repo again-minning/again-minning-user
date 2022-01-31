@@ -43,4 +43,14 @@ public class Account {
     public void updateLastLogin() {
         this.lastLogin = LocalDateTime.now();
     }
+
+    public static Account of(String email, String password, String nickname) {
+        return Account.builder()
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .isAlarm(false)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 }

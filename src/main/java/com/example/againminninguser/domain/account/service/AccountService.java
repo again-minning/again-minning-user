@@ -2,6 +2,7 @@ package com.example.againminninguser.domain.account.service;
 
 import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.AccountRepository;
+import com.example.againminninguser.domain.account.domain.dto.SignUp;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
@@ -45,4 +46,35 @@ public class AccountService {
         }
     }
 
+    public SignUp signUp(SignUp signUp) {
+        checkDuplicatedEmail(signUp.getEmail());
+        validateSignUpRequest(signUp);
+        Account account = Account.of(
+                signUp.getEmail(),
+                passwordEncoder.encode(signUp.getPassword()),
+                signUp.getNickname());
+        Account savedAccount = accountRepository.save(account);
+        return SignUp.of(savedAccount.getEmail(), savedAccount.getPassword(), savedAccount.getNickname());
+    }
+
+    private void validateSignUpRequest(SignUp signUp) {
+        checkEmailFormat(signUp.getEmail());
+        checkPasswordFormat(signUp.getPassword());
+    }
+
+    private void checkEmailFormat(String email) {
+        // if email is not access to format then throw exception
+    }
+
+    private void checkPasswordFormat(String password) {
+        // if password is not access to format then throw exception
+
+    }
+
+    private void checkDuplicatedEmail(String email) {
+        boolean exists = accountRepository.existsByEmail(email);
+        if(exists) {
+            // throw 중복 예외;
+        }
+    }
 }

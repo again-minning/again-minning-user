@@ -1,6 +1,7 @@
 package com.example.againminninguser.domain.account.controller;
 
 import com.example.againminninguser.domain.account.domain.dto.request.LoginRequest;
+import com.example.againminninguser.domain.account.domain.dto.SignUp;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.domain.account.service.AccountService;
@@ -19,6 +20,14 @@ import javax.websocket.server.PathParam;
 public class AccountController {
 
     private final AccountService accountService;
+
+    @PostMapping("/sign-up")
+    public CustomResponseEntity<SignUp> signUp(@RequestBody SignUp signUp) {
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, "회원가입 성공"),
+                accountService.signUp(signUp)
+        );
+    }
 
     @PostMapping("/login")
     public CustomResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
