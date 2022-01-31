@@ -24,7 +24,7 @@ public class AccountController {
     @PostMapping("/sign-up")
     public CustomResponseEntity<SignUp> signUp(@RequestBody SignUp signUp) {
         return new CustomResponseEntity<>(
-                Message.of(HttpStatus.OK, "회원가입 성공"),
+                Message.of(HttpStatus.OK, AccountContent.SIGN_UP_OK),
                 accountService.signUp(signUp)
         );
     }
