@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AccountController.class)
 @TestPropertySource(properties = { "${spring.jwt.key}=1234" })
+@DisplayName("Account Controller 테스트")
 public class AccountControllerTest {
 
     @MockBean
