@@ -54,7 +54,7 @@ public class JwtProvider {
 
     public String createAccessToken(String email, List<String> roles){
         // 1h
-        long accessTokenValidTime = 1000L;
+        long accessTokenValidTime = 60 * 60 * 1000L;
         return this.createToken(email, roles, accessTokenValidTime);
     }
 
@@ -135,5 +135,19 @@ public class JwtProvider {
     public void changeRefreshTokenInRedis(String accountEmail, String newRefreshToken) {
         redisTemplate.delete(accountEmail);
         this.setRefreshInRedis(accountEmail, newRefreshToken);
+    }
+
+    public void logout(HttpServletRequest request, String email) {
+        this.setBlackListAccessToken(request);
+        redisTemplate.delete(email);
+    }
+
+    private void setBlackListAccessToken(HttpServletRequest request) {
+        String accessToken = this.getAccessTokenFromHeader(request);
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        long expiration = this.getExpiration(accessToken).getTime() - System.currentTimeMillis();
+        if(expiration > 0) {
+            values.set(accessToken, "BlackList", Duration.ofMillis(expiration));
+        }
     }
 }

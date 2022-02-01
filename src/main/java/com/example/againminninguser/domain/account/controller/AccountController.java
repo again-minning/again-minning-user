@@ -1,5 +1,6 @@
 package com.example.againminninguser.domain.account.controller;
 
+import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.dto.request.LoginRequest;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
@@ -8,10 +9,12 @@ import com.example.againminninguser.domain.account.service.AccountService;
 import com.example.againminninguser.global.common.content.AccountContent;
 import com.example.againminninguser.global.common.response.CustomResponseEntity;
 import com.example.againminninguser.global.common.response.Message;
+import com.example.againminninguser.global.util.AuthAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
 @RestController
@@ -20,6 +23,14 @@ import javax.websocket.server.PathParam;
 public class AccountController {
 
     private final AccountService accountService;
+
+    @GetMapping("/logout")
+    public CustomResponseEntity<Message> logout(@AuthAccount Account account, HttpServletRequest request) {
+        accountService.logout(account, request);
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, AccountContent.LOGOUT_OK)
+        );
+    }
 
     @PostMapping("/")
     public CustomResponseEntity<SignUpDto> signUp(@RequestBody SignUpDto signUp) {
