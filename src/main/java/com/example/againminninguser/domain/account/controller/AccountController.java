@@ -1,7 +1,7 @@
 package com.example.againminninguser.domain.account.controller;
 
 import com.example.againminninguser.domain.account.domain.dto.request.LoginRequest;
-import com.example.againminninguser.domain.account.domain.dto.SignUp;
+import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.domain.account.service.AccountService;
@@ -21,8 +21,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @PostMapping("/sign-up")
-    public CustomResponseEntity<SignUp> signUp(@RequestBody SignUp signUp) {
+    @PostMapping("/")
+    public CustomResponseEntity<SignUpDto> signUp(@RequestBody SignUpDto signUp) {
         return new CustomResponseEntity<>(
                 Message.of(HttpStatus.OK, AccountContent.SIGN_UP_OK),
                 accountService.signUp(signUp)

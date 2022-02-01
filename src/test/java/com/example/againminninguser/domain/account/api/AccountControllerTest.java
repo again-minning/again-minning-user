@@ -1,7 +1,7 @@
 package com.example.againminninguser.domain.account.api;
 
 import com.example.againminninguser.domain.account.controller.AccountController;
-import com.example.againminninguser.domain.account.domain.dto.SignUp;
+import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
 import com.example.againminninguser.domain.account.service.AccountService;
 import com.example.againminninguser.global.common.AccountTemplate;
 import com.example.againminninguser.global.common.content.AccountContent;
@@ -48,11 +48,11 @@ public class AccountControllerTest {
     @Test
     @DisplayName("잘못된 이메일 형식으로 회원가입 - 회원가입")
     void signUpFailByBadEmail() throws Exception {
-        SignUp signUpInvalidEmail = AccountTemplate.signUpInvalidEmail;
+        SignUpDto signUpInvalidEmail = AccountTemplate.signUpInvalidEmail;
         given(accountService.signUp(any())).willThrow(new BadRequestException(AccountContent.INVALID_EMAIL_FORMAT));
         String request = objectMapper.writeValueAsString(signUpInvalidEmail);
 
-        ResultActions perform = mockMvc.perform(post("/api/v1/account/sign-up")
+        ResultActions perform = mockMvc.perform(post("/api/v1/account/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request));
 
@@ -65,11 +65,11 @@ public class AccountControllerTest {
     @Test
     @DisplayName("잘못된 비밀번호 형식으로 회원가입 - 회원가입")
     void signUpFailByBadPassword() throws Exception {
-        SignUp signUpInvalidPassword = AccountTemplate.signUpInvalidPassword;
+        SignUpDto signUpInvalidPassword = AccountTemplate.signUpInvalidPassword;
         given(accountService.signUp(any())).willThrow(new BadRequestException(AccountContent.INVALID_PASSWORD_FORMAT));
         String request = objectMapper.writeValueAsString(signUpInvalidPassword);
 
-        ResultActions perform = mockMvc.perform(post("/api/v1/account/sign-up")
+        ResultActions perform = mockMvc.perform(post("/api/v1/account/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request));
 
@@ -82,11 +82,11 @@ public class AccountControllerTest {
     @Test
     @DisplayName("정상 회원가입 - 회원가입")
     void signUpSuccess() throws Exception {
-        SignUp signUp = AccountTemplate.signUp;
-        given(accountService.signUp(any())).willReturn(signUp);
-        String request = objectMapper.writeValueAsString(signUp);
+        SignUpDto signUpDto = AccountTemplate.signUp;
+        given(accountService.signUp(any())).willReturn(signUpDto);
+        String request = objectMapper.writeValueAsString(signUpDto);
 
-        ResultActions perform = mockMvc.perform(post("/api/v1/account/sign-up")
+        ResultActions perform = mockMvc.perform(post("/api/v1/account/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request));
 
@@ -94,7 +94,7 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message.status").value(HttpStatus.OK.name()))
                 .andExpect(jsonPath("$.message.msg").value(AccountContent.SIGN_UP_OK))
-                .andExpect(jsonPath("$.data.email").value(signUp.getEmail()))
-                .andExpect(jsonPath("$.data.nickname").value(signUp.getNickname()));
+                .andExpect(jsonPath("$.data.email").value(signUpDto.getEmail()))
+                .andExpect(jsonPath("$.data.nickname").value(signUpDto.getNickname()));
     }
 }
