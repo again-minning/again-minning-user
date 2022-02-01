@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DisplayName("Account Repository Test")
+@DisplayName("Account Repository 테스트")
 public class AccountRepositoryTest {
 
     @Autowired
@@ -42,5 +42,26 @@ public class AccountRepositoryTest {
                 () -> assertEquals(account.getEmail(), accountByEmail.getEmail()),
                 () -> assertEquals(account.getNickname(), accountByEmail.getNickname())
         );
+    }
+
+    @Test
+    @DisplayName("이메일 존재 유뮤 조회 테스트 - 있는 경우")
+    void existAccountByEmailWhenDataIsIt() {
+        Account account = AccountTemplate.account;
+        accountRepository.save(account);
+
+        boolean exists = accountRepository.existsByEmail(account.getEmail());
+
+        assertTrue(exists);
+    }
+
+    @Test
+    @DisplayName("이메일 존재 유뮤 조회 테스트 - 없는 경우")
+    void existAccountByEmailWhenNoData() {
+        Account account = AccountTemplate.account;
+
+        boolean exists = accountRepository.existsByEmail(account.getEmail());
+
+        assertFalse(exists);
     }
 }

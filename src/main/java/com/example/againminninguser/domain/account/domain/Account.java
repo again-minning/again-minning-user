@@ -19,13 +19,10 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* Todo Add Validation */
     private String email;
 
-    /* Todo Add Validation */
     private String password;
 
-    /* Todo Add Validation */
     private String nickname;
 
     private String profile;
@@ -42,5 +39,15 @@ public class Account {
 
     public void updateLastLogin() {
         this.lastLogin = LocalDateTime.now();
+    }
+
+    public static Account of(String email, String password, String nickname) {
+        return Account.builder()
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .isAlarm(false)
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 }

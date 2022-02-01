@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = { "${spring.jwt.key}=1234" })
-@DisplayName("JwtProvider MVC(Validation) Test")
+@DisplayName("JwtProvider MVC(Validation) 테스트")
 public class JwtProviderMvcTest {
 
     @Autowired

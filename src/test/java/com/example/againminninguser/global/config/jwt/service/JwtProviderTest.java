@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestPropertySource(properties = { "${spring.jwt.key}=1234" })
 @ExtendWith({MockitoExtension.class})
-@DisplayName("JwtProvider Service Test")
+@DisplayName("JwtProvider Service 테스트")
 public class JwtProviderTest {
 
     @InjectMocks

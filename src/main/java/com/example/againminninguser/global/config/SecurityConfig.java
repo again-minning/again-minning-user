@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 X
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/account/sign-up", "/api/v1/account/login", "/api/v1/account/refresh/**").permitAll()
+                .antMatchers("/api/v1/account/", "/api/v1/account/login", "/api/v1/account/refresh/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider),
