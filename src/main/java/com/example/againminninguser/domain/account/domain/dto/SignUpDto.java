@@ -10,8 +10,8 @@ public class SignUpDto {
     private String password;
     private String nickname;
 
-    public static SignUpDto of(String email, String password, String nickname) {
-        return new SignUpDto(email, password, nickname);
+    public static SignUpDto of(String email, String nickname) {
+        return new SignUpDto(email, "", nickname);
     }
 
 }
