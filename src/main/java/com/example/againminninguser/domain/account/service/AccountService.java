@@ -97,7 +97,6 @@ public class AccountService {
         jwtProvider.logout(request, account.getEmail());
     }
 
-    @Transactional
     public ProfileResponse updateProfile(Account account, ProfileRequest profile) {
         String originalFilename = profile.getProfile().getOriginalFilename();
         /* Todo S3 or GCS
