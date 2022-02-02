@@ -3,7 +3,9 @@ package com.example.againminninguser.domain.account.service;
 import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.AccountRepository;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
+import com.example.againminninguser.domain.account.domain.dto.request.ProfileRequest;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
+import com.example.againminninguser.domain.account.domain.dto.response.ProfileResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
 import com.example.againminninguser.global.error.BadRequestException;
@@ -60,7 +62,7 @@ public class AccountService {
                 passwordEncoder.encode(signUp.getPassword()),
                 signUp.getNickname());
         Account savedAccount = accountRepository.save(account);
-        return SignUpDto.of(savedAccount.getEmail(), savedAccount.getPassword(), savedAccount.getNickname());
+        return SignUpDto.of(savedAccount.getEmail(), savedAccount.getNickname());
     }
 
     private void validateSignUpRequest(SignUpDto signUp) {
@@ -69,8 +71,7 @@ public class AccountService {
     }
 
     private void checkEmailFormat(String email) {
-//        boolean matches = Pattern.matches(regex, email);
-        boolean matches = PASSWORD_REGEX.matcher(email).matches();
+        boolean matches = EMAIL_REGEX.matcher(email).matches();
         if(!matches) {
             throw new BadRequestException(INVALID_EMAIL_FORMAT);
         }
@@ -78,7 +79,7 @@ public class AccountService {
     }
 
     private void checkPasswordFormat(String password) {
-        boolean matches = EMAIL_REGEX.matcher(password).matches();
+        boolean matches = PASSWORD_REGEX.matcher(password).matches();
         if(!matches) {
             throw new BadRequestException(INVALID_PASSWORD_FORMAT);
         }
@@ -94,5 +95,15 @@ public class AccountService {
 
     public void logout(Account account, HttpServletRequest request) {
         jwtProvider.logout(request, account.getEmail());
+    }
+
+    public ProfileResponse updateProfile(Account account, ProfileRequest profile) {
+        String originalFilename = profile.getProfile().getOriginalFilename();
+        /* Todo S3 or GCS
+            이미지 저장 정해지면 구현 예쩡
+         */
+        account.updateProfile(originalFilename);
+        accountRepository.save(account);
+        return ProfileResponse.from(originalFilename);
     }
 }

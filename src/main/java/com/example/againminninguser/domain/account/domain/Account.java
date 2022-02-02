@@ -50,4 +50,9 @@ public class Account {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    public void updateProfile(String url) {
+        this.profile = url;
+        this.updatedAt = LocalDateTime.now();
+    }
 }

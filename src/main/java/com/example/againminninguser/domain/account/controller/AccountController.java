@@ -3,7 +3,9 @@ package com.example.againminninguser.domain.account.controller;
 import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.dto.request.LoginRequest;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
+import com.example.againminninguser.domain.account.domain.dto.request.ProfileRequest;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
+import com.example.againminninguser.domain.account.domain.dto.response.ProfileResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.TokenDto;
 import com.example.againminninguser.domain.account.service.AccountService;
 import com.example.againminninguser.global.common.content.AccountContent;
@@ -23,6 +25,14 @@ import javax.websocket.server.PathParam;
 public class AccountController {
 
     private final AccountService accountService;
+
+    @PatchMapping("/profile")
+    public CustomResponseEntity<ProfileResponse> updateProfile(@AuthAccount Account account, ProfileRequest profile) {
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, AccountContent.PROFILE_UPDATE_OK),
+                accountService.updateProfile(account, profile)
+        );
+    }
 
     @GetMapping("/logout")
     public CustomResponseEntity<Message> logout(@AuthAccount Account account, HttpServletRequest request) {

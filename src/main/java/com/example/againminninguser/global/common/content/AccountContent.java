@@ -2,9 +2,9 @@ package com.example.againminninguser.global.common.content;
 
 public class AccountContent {
 
-    public static final String LOGOUT_OK = "로그아웃 성공";
-
     private AccountContent() {}
+
+    public static final String LOGOUT_OK = "로그아웃 성공";
 
     public static final String USER_NOT_FOUND = "유저를 찾을 수 없습니다.";
     public static final String USER_NOT_FOUND_BY_LOGIN = "아이디 혹은 비밀번호를 확인하세요.";
@@ -19,4 +19,6 @@ public class AccountContent {
     public static final String INVALID_EMAIL_FORMAT = "이메일 형식을 확인하세요.";
     public static final String INVALID_PASSWORD_FORMAT = "비밀번호 형식을 확인하세요.";
     public static final String DUPLICATED_EMAIL = "이미 가입되어있는 이메일입니다.";
+
+    public static final String PROFILE_UPDATE_OK = "프로필 정보 수정 성공";
 }
