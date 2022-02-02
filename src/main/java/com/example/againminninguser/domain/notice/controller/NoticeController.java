@@ -2,6 +2,7 @@ package com.example.againminninguser.domain.notice.controller;
 
 import com.example.againminninguser.domain.notice.domain.dto.NoticeDto;
 import com.example.againminninguser.domain.notice.service.NoticeService;
+import com.example.againminninguser.global.common.content.NoticeContent;
 import com.example.againminninguser.global.common.response.CustomResponseEntity;
 import com.example.againminninguser.global.common.response.Message;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class NoticeController {
     @GetMapping("")
     public CustomResponseEntity<List<NoticeDto>> getNotice(@PathParam("lastId") long lastId) {
         return new CustomResponseEntity<> (
-                Message.of(HttpStatus.OK, "공지사항 조회 성공"),
+                Message.of(HttpStatus.OK, NoticeContent.NOTICE_OK),
                 noticeService.getNoticeList(lastId)
         );
     }
