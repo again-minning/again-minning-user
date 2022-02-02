@@ -2,6 +2,8 @@ package com.example.againminninguser.global.common.content;
 
 public class AccountContent {
 
+    public static final String LOGOUT_OK = "로그아웃 성공";
+
     private AccountContent() {}
 
     public static final String USER_NOT_FOUND = "유저를 찾을 수 없습니다.";

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
@@ -89,5 +90,9 @@ public class AccountService {
         if(exists) {
             throw new BadRequestException(DUPLICATED_EMAIL);
         }
+    }
+
+    public void logout(Account account, HttpServletRequest request) {
+        jwtProvider.logout(request, account.getEmail());
     }
 }
