@@ -2,9 +2,11 @@ package com.example.againminninguser.domain.account.api;
 
 import com.example.againminninguser.domain.account.controller.AccountController;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
+import com.example.againminninguser.domain.account.domain.dto.request.PasswordRequest;
 import com.example.againminninguser.domain.account.service.AccountService;
 import com.example.againminninguser.global.common.AccountTemplate;
 import com.example.againminninguser.global.common.content.AccountContent;
+import com.example.againminninguser.global.config.account.TestAccount;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
 import com.example.againminninguser.global.error.BadRequestException;
 import com.example.againminninguser.global.error.CustomAuthenticationEntryPoint;
@@ -22,7 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AccountController.class)
@@ -96,5 +98,22 @@ public class AccountControllerTest {
                 .andExpect(jsonPath("$.message.msg").value(AccountContent.SIGN_UP_OK))
                 .andExpect(jsonPath("$.data.email").value(signUpDto.getEmail()))
                 .andExpect(jsonPath("$.data.nickname").value(signUpDto.getNickname()));
+    }
+
+    @Test
+    @TestAccount
+    @DisplayName("서로 다른 비밀번호 - 비밀번호 변경")
+    void updatePasswordFailByNotEqual() throws Exception {
+        PasswordRequest badPasswordRequest = AccountTemplate.badPasswordRequest;
+        String request = objectMapper.writeValueAsString(badPasswordRequest);
+        willThrow(new BadRequestException(AccountContent.PASSWORD_CONFIRM_INVALID))
+                .given(accountService).updatePassword(any(), any());
+        ResultActions perform = mockMvc.perform(patch("/api/v1/account/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request));
+        perform
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message.status").value(HttpStatus.BAD_REQUEST.name()))
+                .andExpect(jsonPath("$.message.msg").value(AccountContent.PASSWORD_CONFIRM_INVALID));
     }
 }

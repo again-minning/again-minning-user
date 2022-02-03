@@ -2,6 +2,7 @@ package com.example.againminninguser.global.common;
 
 import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
+import com.example.againminninguser.domain.account.domain.dto.request.PasswordRequest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,4 +25,7 @@ public class AccountTemplate {
 
     public static final SignUpDto signUpInvalidPassword =
             new SignUpDto("test@test.com", "1234567", "sol");
+
+    public static final PasswordRequest badPasswordRequest =
+            new PasswordRequest("12345678", "87654321");
 }
