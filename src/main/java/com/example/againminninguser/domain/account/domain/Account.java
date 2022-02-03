@@ -55,4 +55,8 @@ public class Account {
         this.profile = url;
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }

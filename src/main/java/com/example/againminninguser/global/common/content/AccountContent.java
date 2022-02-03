@@ -21,4 +21,7 @@ public class AccountContent {
     public static final String DUPLICATED_EMAIL = "이미 가입되어있는 이메일입니다.";
 
     public static final String PROFILE_UPDATE_OK = "프로필 정보 수정 성공";
+
+    public static final String PASSWORD_UPDATE_OK = "비밀번호를 성공적으로 수정 성공";
+    public static final String PASSWORD_CONFIRM_INVALID = "비밀번호가 서로 다릅니다.";
 }
