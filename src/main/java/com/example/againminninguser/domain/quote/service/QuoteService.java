@@ -30,13 +30,14 @@ public class QuoteService {
         return QuoteDto.builder().author(author).content(content).build();
     }
 
-    public void updateQuoteOfToday() {
+    public boolean updateQuoteOfToday() {
         long randomQuoteId = getRandomQuoteId();
         Quote quote = quoteRepository.findById(randomQuoteId).get();
         redisTemplate.delete("Quote-author");
         redisTemplate.delete("Quote-content");
         redisTemplate.opsForValue().set("Quote-author", quote.getAuthor());
         redisTemplate.opsForValue().set("Quote-content", quote.getContent());
+        return true;
     }
 
     private long getRandomQuoteId() {

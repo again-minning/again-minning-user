@@ -27,7 +27,14 @@ public class QuoteController {
     }
 
     @GetMapping("/update")
-    public void updateQuoteOfToday() {
-        quoteService.updateQuoteOfToday();
+    public CustomResponseEntity<Message> updateQuoteOfToday() {
+        boolean result = quoteService.updateQuoteOfToday();
+        return result
+                ? new CustomResponseEntity<>(
+                    Message.of(HttpStatus.OK, QuoteContent.QUOTE_UPDATE_OK)
+                )
+                : new CustomResponseEntity<>(
+                    Message.of(HttpStatus.INTERNAL_SERVER_ERROR, QuoteContent.QUOTE_UPDATE_ERROR)
+                );
     }
 }
