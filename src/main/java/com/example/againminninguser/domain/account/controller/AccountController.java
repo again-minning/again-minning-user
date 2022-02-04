@@ -13,6 +13,7 @@ import com.example.againminninguser.global.common.content.AccountContent;
 import com.example.againminninguser.global.common.response.CustomResponseEntity;
 import com.example.againminninguser.global.common.response.Message;
 import com.example.againminninguser.global.util.AuthAccount;
+import com.example.againminninguser.global.util.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,31 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
+import static com.example.againminninguser.global.common.content.MailContent.*;
+
 @RestController
 @RequestMapping("/api/v1/account")
 @RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
+    private final MailService mailService;
+
+    @GetMapping("/confirm")
+    public CustomResponseEntity<TokenDto> confirmAuthKey(@PathParam("email") String email, @PathParam("authKey") String authKey) {
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, AUTH_KEY_OK),
+                mailService.confirmAuthKey(email, authKey)
+        );
+    }
+
+    @GetMapping("/mail")
+    public CustomResponseEntity<Message> sendMail(@PathParam("email") String email) {
+        mailService.sendAuthMail(email);
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, EMAIL_SEND_OK)
+        );
+    }
 
     @PatchMapping("/password")
     public CustomResponseEntity<Message> updatePassword(@AuthAccount Account account, @RequestBody PasswordRequest passwordRequest) {
