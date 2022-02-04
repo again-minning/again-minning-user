@@ -50,6 +50,7 @@ public class Account {
                 .nickname(nickname)
                 .isAlarm(false)
                 .createdAt(LocalDateTime.now())
+                .isQuote(false)
                 .build();
     }
 
