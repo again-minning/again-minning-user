@@ -29,6 +29,8 @@ public class Account {
 
     private boolean isAlarm;
 
+    private boolean isQuote;
+
     private String fcmToken;
 
     private LocalDateTime createdAt;
@@ -58,5 +60,9 @@ public class Account {
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
+    }
+  
+    public void changeIsQuoteOfStatus() {
+        this.isQuote = !this.isQuote;
     }
 }
