@@ -20,7 +20,7 @@ import static com.example.againminninguser.global.common.content.MailContent.*;
 
 @Service
 @RequiredArgsConstructor
-public class MailService {
+public class MailUtil {
     private final JavaMailSender mailSender;
     private final RedisTemplate<String, String> redisTemplate;
     private final Random random;
@@ -50,11 +50,11 @@ public class MailService {
         } catch (MessagingException  e) {
             throw new ServerErrorException(SEND_MAIL_FAIL);
         }
-        redisTemplate.opsForValue().set(email, authKey, Duration.ofMillis( 3 * 60 * 1000L ));
+        redisTemplate.opsForValue().set("AuthKey_" + email, authKey, Duration.ofMillis( 3 * 60 * 1000L ));
     }
 
     public TokenDto confirmAuthKey(String email, String authKey) {
-        String authKeyInRedis = redisTemplate.opsForValue().get(email);
+        String authKeyInRedis = redisTemplate.opsForValue().get("AuthKey_" + email);
         if(Objects.isNull(authKeyInRedis)) {
             throw new BadRequestException(EXPIRED_AUTH_KEY);
         }
@@ -62,7 +62,7 @@ public class MailService {
         if(!result) {
             throw new BadRequestException(AUTH_KEY_NOT_EQUAL);
         }
-        redisTemplate.delete(email);
+        redisTemplate.delete("AuthKey_" + email);
         String tempToken = jwtProvider.createToken(email, List.of(""), 3 * 60 * 1000L);
         return TokenDto.of(tempToken, null);
     }

@@ -13,7 +13,7 @@ import com.example.againminninguser.global.common.content.AccountContent;
 import com.example.againminninguser.global.common.response.CustomResponseEntity;
 import com.example.againminninguser.global.common.response.Message;
 import com.example.againminninguser.global.util.AuthAccount;
-import com.example.againminninguser.global.util.MailService;
+import com.example.againminninguser.global.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,19 +29,19 @@ import static com.example.againminninguser.global.common.content.MailContent.*;
 public class AccountController {
 
     private final AccountService accountService;
-    private final MailService mailService;
+    private final MailUtil mailUtil;
 
     @GetMapping("/confirm")
     public CustomResponseEntity<TokenDto> confirmAuthKey(@PathParam("email") String email, @PathParam("authKey") String authKey) {
         return new CustomResponseEntity<>(
                 Message.of(HttpStatus.OK, AUTH_KEY_OK),
-                mailService.confirmAuthKey(email, authKey)
+                mailUtil.confirmAuthKey(email, authKey)
         );
     }
 
     @GetMapping("/mail")
     public CustomResponseEntity<Message> sendMail(@PathParam("email") String email) {
-        mailService.sendAuthMail(email);
+        mailUtil.sendAuthMail(email);
         return new CustomResponseEntity<>(
                 Message.of(HttpStatus.OK, EMAIL_SEND_OK)
         );
