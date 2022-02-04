@@ -29,6 +29,8 @@ public class Account {
 
     private boolean isAlarm;
 
+    private boolean isQuote;
+
     private String fcmToken;
 
     private LocalDateTime createdAt;
@@ -54,5 +56,9 @@ public class Account {
     public void updateProfile(String url) {
         this.profile = url;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void changeIsQuoteOfStatus() {
+        this.isQuote = !this.isQuote;
     }
 }

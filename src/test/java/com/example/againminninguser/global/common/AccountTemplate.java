@@ -17,11 +17,11 @@ public class AccountTemplate {
                     .build();
 
     public static final SignUpDto signUp =
-            SignUpDto.of("test@test.com", "12345678", "sol");
+            new SignUpDto("test@test.com", "12345678", "sol");
 
     public static final SignUpDto signUpInvalidEmail =
-            SignUpDto.of("test", "12345678", "sol");
+            new SignUpDto("test", "12345678", "sol");
 
     public static final SignUpDto signUpInvalidPassword =
-            SignUpDto.of("test@test.com", "1234567", "sol");
+            new SignUpDto("test@test.com", "1234567", "sol");
 }
