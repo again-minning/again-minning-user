@@ -3,6 +3,7 @@ package com.example.againminninguser.domain.account.controller;
 import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.dto.request.LoginRequest;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
+import com.example.againminninguser.domain.account.domain.dto.request.PasswordRequest;
 import com.example.againminninguser.domain.account.domain.dto.request.ProfileRequest;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.ProfileResponse;
@@ -25,6 +26,14 @@ import javax.websocket.server.PathParam;
 public class AccountController {
 
     private final AccountService accountService;
+
+    @PatchMapping("/password")
+    public CustomResponseEntity<Message> updatePassword(@AuthAccount Account account, @RequestBody PasswordRequest passwordRequest) {
+        accountService.updatePassword(account, passwordRequest);
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, AccountContent.PASSWORD_UPDATE_OK)
+        );
+    }
 
     @PatchMapping("/profile")
     public CustomResponseEntity<ProfileResponse> updateProfile(@AuthAccount Account account, ProfileRequest profile) {

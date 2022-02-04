@@ -60,4 +60,17 @@ public class AccountServiceTest {
         assertEquals(AccountContent.INVALID_PASSWORD_FORMAT, errorMessage);
 
     }
+
+    @Test
+    @DisplayName("비밀번호 확인 검증 테스트")
+    void passwordConfirmTest() {
+        String password = "12345678";
+        String passwordConfirm = "87654321";
+
+        String errorMessage = assertThrows(BadRequestException.class,
+                () -> ReflectionTestUtils.invokeMethod(
+                        accountService, "checkPasswordConfirm", password, passwordConfirm)
+        ).getMessage();
+        assertEquals(AccountContent.PASSWORD_CONFIRM_INVALID, errorMessage);
+    }
 }

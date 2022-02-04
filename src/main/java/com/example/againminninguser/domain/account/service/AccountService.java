@@ -3,6 +3,7 @@ package com.example.againminninguser.domain.account.service;
 import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.account.domain.AccountRepository;
 import com.example.againminninguser.domain.account.domain.dto.SignUpDto;
+import com.example.againminninguser.domain.account.domain.dto.request.PasswordRequest;
 import com.example.againminninguser.domain.account.domain.dto.request.ProfileRequest;
 import com.example.againminninguser.domain.account.domain.dto.response.LoginResponse;
 import com.example.againminninguser.domain.account.domain.dto.response.ProfileResponse;
@@ -105,5 +106,20 @@ public class AccountService {
         account.updateProfile(originalFilename);
         accountRepository.save(account);
         return ProfileResponse.from(originalFilename);
+    }
+
+    public void updatePassword(Account account, PasswordRequest passwordRequest) {
+        this.checkPasswordConfirm(passwordRequest.getNewPassword(), passwordRequest.getNewPasswordConfirm());
+        this.checkPasswordFormat(passwordRequest.getNewPassword());
+        String newPassword = passwordEncoder.encode(passwordRequest.getNewPassword());
+        account.updatePassword(newPassword);
+        accountRepository.save(account);
+    }
+
+    private void checkPasswordConfirm(String password, String passwordConfirm) {
+        boolean equals = password.equals(passwordConfirm);
+        if(!equals) {
+            throw new BadRequestException(PASSWORD_CONFIRM_INVALID);
+        }
     }
 }

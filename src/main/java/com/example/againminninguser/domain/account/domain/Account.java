@@ -58,6 +58,10 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+  
     public void changeIsQuoteOfStatus() {
         this.isQuote = !this.isQuote;
     }
