@@ -1,15 +1,15 @@
 package com.example.againminninguser.domain.quote.controller;
 
+import com.example.againminninguser.domain.account.domain.Account;
 import com.example.againminninguser.domain.quote.domain.dto.QuoteDto;
 import com.example.againminninguser.domain.quote.service.QuoteService;
 import com.example.againminninguser.global.common.content.QuoteContent;
 import com.example.againminninguser.global.common.response.CustomResponseEntity;
 import com.example.againminninguser.global.common.response.Message;
+import com.example.againminninguser.global.util.AuthAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuoteController {
 
     private final QuoteService quoteService;
+
+    @PatchMapping("/perform")
+    public CustomResponseEntity<Message> performQuoteOfToday(
+            @AuthAccount Account account, @RequestBody QuoteDto quoteDto) {
+        quoteService.performQuoteOfToday(account, quoteDto);
+        return new CustomResponseEntity<>(
+                Message.of(HttpStatus.OK, QuoteContent.QUOTE_PERFORM_OK)
+        );
+    }
 
     @GetMapping("")
     public CustomResponseEntity<QuoteDto> getQuoteOfToday() {
