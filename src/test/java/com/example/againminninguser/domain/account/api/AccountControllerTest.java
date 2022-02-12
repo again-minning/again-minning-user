@@ -10,6 +10,7 @@ import com.example.againminninguser.global.config.account.TestAccount;
 import com.example.againminninguser.global.config.jwt.JwtProvider;
 import com.example.againminninguser.global.error.BadRequestException;
 import com.example.againminninguser.global.error.CustomAuthenticationEntryPoint;
+import com.example.againminninguser.global.util.MailUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,8 @@ public class AccountControllerTest {
     private JwtProvider jwtProvider;
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    @MockBean
+    private MailUtil mailUtil;
 
     @Autowired
     private MockMvc mockMvc;
